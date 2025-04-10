@@ -1,0 +1,55 @@
+name: CICD
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  packages: read
+  statues: write
+  id-token: write
+
+jobs:
+  ci:
+    permissions: write-all
+    name: Calidad de codigo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pre-Commit
+        run: |
+          pip install pre-commit
+          pre-commit --version
+          pre-commit install
+          pre-commit run --all-files
+
+  cd:
+    needs: [ci]
+    name: Deploy
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compile
+        run: |
+          pip install -r src/pipelines/requirements.txt
+          python -B src/pipelines/iris_pipeline.py
+
+      - name: 'GCP Auth'
+        uses: 'google-github-actions/auth@0.4.0'
+        with:
+          project_id: ${{ vars.PROJECT_ID }}
+          workload_identity_provider: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.SERVICE_ACCOUNT }}
+
+      - name: Register
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+          -F tags=latest \
+          -F content=@pipeline.yaml \
+          ${{ vars.PIPELINE_REPOSITORY }}
