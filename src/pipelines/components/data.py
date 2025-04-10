@@ -1,5 +1,6 @@
 from kfp.dsl import Dataset, Output, component
 
+
 @component(
     base_image="grc.io/deeplearning-platform-release/tf2-cpu.2-6:latest",
     packages_to_install=[
@@ -7,7 +8,6 @@ from kfp.dsl import Dataset, Output, component
         "google-cloud-bigquery",
     ],
 )
-
 def load_data(
     proyect_id: str,
     bq_dataset: str,
@@ -19,7 +19,7 @@ def load_data(
     from google.cloud import bigquery
     from sklearn.model_selection import train_test_split
 
-    client = bigquery.Client() #conectar con el cliente
+    client = bigquery.Client()  # conectar con el cliente
 
     # Practicamente aca se extrae los datos. asi como un Select * from (la_tabla -> los datos de iris)
     dataset_ref = bigquery.DatasetReference(proyect_id, bq_dataset)
@@ -35,7 +35,7 @@ def load_data(
     df = pd.concat(dfs, ignore_index=True)
     del dfs
 
-    #Preprocesamiento
+    # Preprocesamiento
     df["Species"].replace(
         {
             "Iris-versicolor": 0,
@@ -46,7 +46,7 @@ def load_data(
     )
 
     X_train, X_test, y_train, y_test = train_test_split(
-        df.drop("Species", axis = 1),
+        df.drop("Species", axis=1),
         df["Species"],
         test_size=0.2,
         random_state=42,
@@ -55,5 +55,5 @@ def load_data(
     X_train["Species"] = y_train
     X_test["Species"] = y_test
 
-    X_train.to_csv(f"{train_dataset.path}", index= False)
-    X_test.to_csv(f"{test_dataset.path}", index= False)
+    X_train.to_csv(f"{train_dataset.path}", index=False)
+    X_test.to_csv(f"{test_dataset.path}", index=False)

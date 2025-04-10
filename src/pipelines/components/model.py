@@ -1,5 +1,6 @@
 from kfp.dsl import Dataset, Input, Metrics, Model, Output, component
 
+
 @component(
     base_image="grc.io/deeplearning-platform-release/tf2-cpu.2-6:latest",
     packages_to_install=[
@@ -7,13 +8,12 @@ from kfp.dsl import Dataset, Input, Metrics, Model, Output, component
         "joblib == 1.1.0",
     ],
 )
-
 def decision_tree(
-    train_dataset: Input[Dataset], 
-    metrics: Output[Metrics], #Metricas
-    output_model: Output[Model], #Guardar el modelo
+    train_dataset: Input[Dataset],
+    metrics: Output[Metrics],  # Metricas
+    output_model: Output[Model],  # Guardar el modelo
 ):
-    
+
     import joblib
     import pandas as pd
     from sklearn.metrics import accuracy_score
@@ -23,7 +23,7 @@ def decision_tree(
     train = pd.read_csv(train_dataset.path)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        train.drop("Species", axis = 1),
+        train.drop("Species", axis=1),
         train["Species"],
         test_size=0.2,
         random_state=42,
@@ -35,8 +35,9 @@ def decision_tree(
     acc = accuracy_score(y_test, pred)
 
     metrics.log_metric("accuracy", (acc))
-    
+
     joblib.dump(model, output_model.path)
+
 
 @component(
     base_image="grc.io/deeplearning-platform-release/tf2-cpu.2-6:latest",
@@ -45,13 +46,12 @@ def decision_tree(
         "joblib == 1.1.0",
     ],
 )
-
 def random_forest(
-    train_dataset: Input[Dataset], 
-    metrics: Output[Metrics], #Metricas
-    output_model: Output[Model], #Guardar el modelo
+    train_dataset: Input[Dataset],
+    metrics: Output[Metrics],  # Metricas
+    output_model: Output[Model],  # Guardar el modelo
 ):
-    
+
     import joblib
     import pandas as pd
     from sklearn.metrics import accuracy_score
@@ -61,7 +61,7 @@ def random_forest(
     train = pd.read_csv(train_dataset.path)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        train.drop("Species", axis = 1),
+        train.drop("Species", axis=1),
         train["Species"],
         test_size=0.2,
         random_state=42,
@@ -73,5 +73,5 @@ def random_forest(
     acc = accuracy_score(y_test, pred)
 
     metrics.log_metric("accuracy", (acc))
-    
+
     joblib.dump(model, output_model.path)

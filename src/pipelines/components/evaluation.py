@@ -1,5 +1,6 @@
 from kfp.dsl import Dataset, Input, Metrics, Model, Output, component
 
+
 @component(
     base_image="grc.io/deeplearning-platform-release/tf2-cpu.2-6:latest",
     packages_to_install=[
@@ -7,7 +8,6 @@ from kfp.dsl import Dataset, Input, Metrics, Model, Output, component
         "joblib == 1.1.0",
     ],
 )
-
 def choose_best_model(
     test_dataset: Input[Dataset],
     decision_tree_model: Input[Model],
@@ -15,7 +15,7 @@ def choose_best_model(
     metrics: Output[Metrics],
     best_model: Output[Model],
 ):
-    
+
     import joblib
     import pandas as pd
     from sklearn.metrics import accuracy_score
