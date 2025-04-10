@@ -7,7 +7,7 @@ on:
 permissions:
   contents: read
   packages: read
-  statues: write
+  statuses: write
   id-token: write
 
 jobs:
