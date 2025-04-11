@@ -13,7 +13,7 @@ def upload_model(
 
     from google.cloud import aiplatform
 
-    aiplatform.init(proyect=project_id, location=location)
+    aiplatform.init(project=project_id, location=location)
 
     aiplatform.Model.upload_scikit_learn_model_file(
         model_file_path=model.path,
