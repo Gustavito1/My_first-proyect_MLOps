@@ -1,15 +1,15 @@
 from kfp.dsl import Dataset, Output, component
 
-
+# Kube flow ya que este dataset sera un contenedor
 @component(
-    base_image="grc.io/deeplearning-platform-release/tf2-cpu.2-6:latest",
+    base_image="gcr.io/deeplearning-platform-release/tf2-cpu.2-6:latest",
     packages_to_install=[
         "pandas",
         "google-cloud-bigquery",
     ],
 )
 def load_data(
-    proyect_id: str,
+    project_id: str,
     bq_dataset: str,
     bq_table: str,
     train_dataset: Output[Dataset],
@@ -22,14 +22,14 @@ def load_data(
     client = bigquery.Client()  # conectar con el cliente
 
     # Practicamente aca se extrae los datos. asi como un Select * from (la_tabla -> los datos de iris)
-    dataset_ref = bigquery.DatasetReference(proyect_id, bq_dataset)
+    dataset_ref = bigquery.DatasetReference(project_id, bq_dataset)
     table_ref = dataset_ref.table(bq_table)
     table = bigquery.Table(table_ref)
     iterable_table = client.list_rows(table).to_dataframe_iterable()
 
     # Se coloca esa tabla dentro de un dataframe
     dfs = []
-    for now in iterable_table:
+    for row in iterable_table:
         dfs.append(row)
 
     df = pd.concat(dfs, ignore_index=True)
