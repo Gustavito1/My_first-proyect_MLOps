@@ -50,7 +50,7 @@ jobs:
         with:
           project_id: 'mlops-first-proyect'
           workload_identity_provider: 'projects/405581335268/locations/global/workloadIdentityPools/1234gus/providers/gustavito'
-          service_account: 'mlops-proyect-testing@mlops-first-proyect.iam.gserviceaccount.com'
+          service_account: 'mlops-all-permissions-iris@mlops-first-proyect.iam.gserviceaccount.com'
 
       - name: Register
         run: |
