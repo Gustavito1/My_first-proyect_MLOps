@@ -5,7 +5,7 @@ import kfp.compiler  # Kube-flow pipeline
 sys.path.append("src")
 
 PIPELINE_NAME = "The-Iris-Pipeline-v1"
-PIPELINE_ROOT = "gs://mlops-gustavo-iris/pipeline_root"
+PIPELINE_ROOT = "gs://mlops-gustavo-iris/pipeline_root/"
 
 
 @kfp.dsl.pipeline(name=PIPELINE_NAME, pipeline_root=PIPELINE_ROOT)
