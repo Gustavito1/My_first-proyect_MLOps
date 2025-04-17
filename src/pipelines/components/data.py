@@ -2,7 +2,7 @@ from kfp.dsl import Dataset, Output, component
 
 # Kube flow ya que este dataset sera un contenedor
 @component(
-    base_image="us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-13:latest",
+    base_image="gcr.io/deeplearning-platform-release/base-cpu.py310",
     packages_to_install=[
         "pandas",
         "google-cloud-bigquery",
