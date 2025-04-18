@@ -1,6 +1,7 @@
 import sys
 import kfp
-import kfp.compiler  # Kube-flow pipeline
+
+# import kfp.compiler  # Kube-flow pipeline
 
 sys.path.append("src")
 
