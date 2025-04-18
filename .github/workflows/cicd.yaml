@@ -47,6 +47,9 @@ jobs:
 
       - name: Compile
         run: |
+          python -m pip install wheel
+          pip install --upgrade pip
+          python -m pip install --upgrade setuptools
           pip install -r src/pipelines/requirements.txt --use-deprecated=legacy-resolver
           python -B src/pipelines/iris_pipeline.py
 
