@@ -42,7 +42,7 @@ jobs:
 
       - name: Compile
         run: |
-          pip install -r src/pipelines/requirements.txt
+          pip install -r src/pipelines/requirements.txt --use-deprecated=legacy-resolver
           python -B src/pipelines/iris_pipeline.py
 
       - name: 'GCP Auth'
