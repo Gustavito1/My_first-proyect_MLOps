@@ -2,7 +2,7 @@ from kfp.dsl import Dataset, Input, Metrics, Model, Output, component
 
 
 @component(
-    base_image="tensorflow/tensorflow",
+    base_image="gcr.io/deeplearning-platform-release/base-cpu.py310",
     packages_to_install=[
         "pandas == 1.3.5",
         "joblib == 1.1.0",
